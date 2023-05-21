@@ -1,17 +1,25 @@
 #define TABLE_SIZE 1000
 
-typedef struct {
+typedef struct hp {
     char *key;
     int value;
 } hash_pair;
 
-typedef struct {
-    hash_table *pairs;
-    int num_pair; 
+typedef struct hb {
+    hash_pair *pairs;
+    int num_pairs; 
 } hash_bucket;
 
-typedef struct {
+typedef struct ht {
     hash_bucket *buckets;
     int num_bucket;
 } hash_table;
+
+size_t hashFunction(char *key);
+
+hash_pair *createPair(char *key, int value);
+hash_table *createTable();
+void deleteTable();
+
+void insertKey(hash_table *table, char *key, int value);
 

@@ -4,8 +4,9 @@
 #include "hashtable.h"
 
 
-
 int main(){
+
+    hash_table *table = createTable();
 
     return 0;
 }
