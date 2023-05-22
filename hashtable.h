@@ -1,4 +1,5 @@
 #define TABLE_SIZE 1000
+#include <stddef.h>
 
 typedef struct hp {
     char *key;

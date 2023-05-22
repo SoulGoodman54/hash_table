@@ -1,6 +1,5 @@
 #include <string.h>
 #include <stdlib.h>
-#include <assert.h>
 #include "hashtable.h"
 
 size_t hashFunction(char *key){
@@ -88,7 +87,7 @@ hash_pair *searchKey(hash_table *table, char *key){
     return NULL;
 }
 
-#define LASTPAIR bucket->pairs[bucket->num_pairs]
+#define LASTPAIR bucket->pairs[bucket->num_pairs-1]
 
 hash_table *removeKey(hash_table *table, char *key){
 
