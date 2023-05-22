@@ -120,6 +120,9 @@ hash_table *removeKey(hash_table *table, char *key){
 
                 free(LASTPAIR.key);
                 free(&LASTPAIR); 
+
+                bucket->num_pairs--;
+                bucket->pairs = (hash_pair*) realloc(bucket->pairs, bucket->num_pairs * sizeof(hash_pair));
             }
         }
     }
