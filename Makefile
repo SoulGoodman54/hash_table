@@ -1,5 +1,5 @@
 CC = gcc
-OBJECT += hash_table.o functions.o viewtable.o
+OBJECT += hash_table.o functions.o viewtable.o createtable.o
 
 all: ht 
 

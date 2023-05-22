@@ -6,10 +6,11 @@
 void printBucket(hash_table *table, size_t index, FILE *file){
 
     hash_bucket *bucket = &table->buckets[index];
+    fprintf(file, "%ld ", index + 1);
 
     if (bucket->num_pairs == 0){
 
-        fprintf(file, "-");
+        fprintf(file, "-\n");
         return;
     }
 
