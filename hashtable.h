@@ -21,5 +21,6 @@ hash_pair *createPair(char *key, int value);
 hash_table *createTable();
 void deleteTable();
 
-void insertKey(hash_table *table, char *key, int value);
-
+hash_table *insertKey(hash_table *table, char *key, int value);
+hash_pair *searchKey(hash_table *table, char *key);
+hash_table *removeKey(hash_table *table, char *key);
