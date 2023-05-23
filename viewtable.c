@@ -28,4 +28,12 @@ void printTable(hash_table *table, FILE* file){
         printBucket(table, index, file);
 }
 
+void printBloomFilter(hash_table *table, FILE *file){
+
+    for (int i = 0; i < table->num_buckets; i++)
+        fprintf(file, "| %d ", table->bloom_filter[i]);
+    
+    fprintf(file, "|\n");
+}
+
 

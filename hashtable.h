@@ -1,4 +1,5 @@
 #include <stddef.h>
+#include <stdbool.h>
 
 #define check {printf ("%s : %d\n", __FILE__, __LINE__); exit (0);}
 
@@ -22,6 +23,7 @@ typedef struct ht {
     hash_bucket *buckets;
     int num_buckets;
     int num_elems;
+    bool *bloom_filter;
 } hash_table;
 #endif
 
@@ -37,3 +39,6 @@ hash_table *addBucket(hash_table *table, hash_bucket *bucket, size_t index, int 
 hash_table *insertKey(hash_table *table, char *key, int value);
 hash_pair  *searchKey(hash_table *table, char *key);
 hash_table *removeKey(hash_table *table, char *key);
+
+hash_table *addToFilter(hash_table *table, char *key);
+bool testByFilter(hash_table *table, char *key);

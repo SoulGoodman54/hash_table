@@ -30,8 +30,12 @@ hash_table *createTable(int size){
     
     hash_table *table = (hash_table *) malloc(sizeof(hash_table));  
     table->buckets = (hash_bucket*) calloc(size, sizeof(hash_bucket));
+    table->bloom_filter = (bool*) calloc(size, sizeof(bool));
+
     table->num_buckets = size;
     table->num_elems = 0;
+
+    memset(table->bloom_filter, false, size);
     
     for (int i = 0; i < size; i++){
         
@@ -54,6 +58,7 @@ void deleteTable(hash_table *table){
     }
 
     free(table->buckets);
+    free(table->bloom_filter);
     free(table);
 }
 

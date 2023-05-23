@@ -6,6 +6,8 @@
 
 hash_table *insertKey(hash_table *table, char *key, int value){
 
+    table = addToFilter(table, key);
+
     size_t index = hashFunction(key, table->num_buckets);
 
     if (BUCKET(index).num_pairs == 0){
@@ -29,11 +31,10 @@ hash_table *insertKey(hash_table *table, char *key, int value){
 
 hash_pair *searchKey(hash_table *table, char *key){
 
-    size_t index = hashFunction(key, table->num_buckets);
-
-    if (&table->buckets[index] == NULL) 
+    if (!testByFilter(table, key))
         return NULL;
- 
+    
+    size_t index = hashFunction(key, table->num_buckets);
 
     for (int i = 0; i < BUCKET(i).num_pairs; i++){
 
@@ -54,9 +55,10 @@ void eqPair(hash_pair *a, hash_pair *b){
 
 hash_table *removeKey(hash_table *table, char *key){
 
-    size_t index = hashFunction(key, table->num_buckets);
-    if (BUCKET(index).num_pairs == 0)
-        return table;
+    if (!testByFilter(table, key))
+        return table;    
+    
+    size_t index = hashFunction(key, table->num_buckets); 
 
     for (int i = 0; i < BUCKET(index).num_pairs; i++){
 

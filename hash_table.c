@@ -11,9 +11,18 @@ int main(){
     
     table = insertKey(table, "asda", 5); 
 
+    FILE *table1 = fopen("table1", "w");
+    printTable(table, table1);
+    printBloomFilter (table, stdout);
+    fclose(table1);
+
     table = rehash(table);
 
-    printTable(table, stdout);
+    FILE *table2 = fopen("table2", "w");
+    printTable(table, table2);
+    printBloomFilter (table, stdout);
+    fclose(table2);
+
     deleteTable(table);
 
     return 0;
