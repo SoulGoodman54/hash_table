@@ -1,5 +1,7 @@
 #include <stddef.h>
 
+#define check {printf ("%s : %d\n", __FILE__, __LINE__); exit (0);}
+
 #define TABLE_SIZE 10
 #define BUCKET(i) (table->buckets[i])
 

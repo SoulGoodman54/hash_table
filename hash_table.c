@@ -8,7 +8,10 @@
 int main(){
 
     hash_table *table = createTable(TABLE_SIZE);
+    
     table = insertKey(table, "asda", 5); 
+
+    table = rehash(table);
 
     printTable(table, stdout);
     deleteTable(table);
