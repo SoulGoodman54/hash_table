@@ -5,7 +5,7 @@
 
 size_t hashFunction(char *key, int table_size){
 
-    int a = 1, q = 37;
+    int a = 1, q = 3889;
     size_t ret = 0;
 
     for (int i = 0; i <= strlen(key); i++){
@@ -52,7 +52,6 @@ void deleteTable(hash_table *table){
 
         if(table->buckets[i].pairs != NULL){
 
-            free(table->buckets[i].pairs->key);
             free(table->buckets[i].pairs);
         }
     }

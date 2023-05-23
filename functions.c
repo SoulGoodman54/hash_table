@@ -4,8 +4,26 @@
 #include "hashtable.h"
 
 
+hash_pair *searchKey(hash_table *table, char *key){
+
+    if (!testByFilter(table, key))
+        return NULL;
+    
+    size_t index = hashFunction(key, table->num_buckets);
+
+    for (int i = 0; i < BUCKET(index).num_pairs; i++){
+
+        if (strcmp(BUCKET(index).pairs[i].key, key) == 0)
+            return &BUCKET(index).pairs[i];
+    }
+
+    return NULL;
+}
+
 hash_table *insertKey(hash_table *table, char *key, int value){
 
+    if(searchKey(table, key)) return table;
+    
     table = addToFilter(table, key);
 
     size_t index = hashFunction(key, table->num_buckets);
@@ -22,30 +40,16 @@ hash_table *insertKey(hash_table *table, char *key, int value){
     BUCKET(index).num_pairs++;
     BUCKET(index).pairs = (hash_pair*) realloc(BUCKET(index).pairs, BUCKET(index).num_pairs * sizeof(hash_pair));
 
-    hash_pair *pair = createPair(key, value);
-    BUCKET(index).pairs[BUCKET(index).num_pairs-1] = *pair;
-    free(pair); 
+    BUCKET(index).pairs[BUCKET(index).num_pairs-1].key = strdup(key);
+    BUCKET(index).pairs[BUCKET(index).num_pairs-1].value = value;
+
+    if (table->num_elems > table->num_buckets * 5 / 3)
+        table = rehash(table);
 
     return table;
 }
 
-hash_pair *searchKey(hash_table *table, char *key){
-
-    if (!testByFilter(table, key))
-        return NULL;
-    
-    size_t index = hashFunction(key, table->num_buckets);
-
-    for (int i = 0; i < BUCKET(i).num_pairs; i++){
-
-        if (strcmp(BUCKET(index).pairs[index].key, key) == 0)
-            return &BUCKET(index).pairs[i];
-    }
-
-    return NULL;
-}
-
-void eqPair(hash_pair *a, hash_pair *b){
+void copyPair(hash_pair *a, hash_pair *b){
 
     a->key = strdup(b->key);
     a->value = b->value;
@@ -65,7 +69,7 @@ hash_table *removeKey(hash_table *table, char *key){
         if (strcmp(BUCKET(index).pairs[i].key, key) == 0){            
 
             for (int j = 0; j < BUCKET(index).num_pairs; j++)
-                if (j > i) eqPair (BUCKET(index).pairs + j - 1, BUCKET(index).pairs + j);
+                if (j > i) copyPair (BUCKET(index).pairs + j - 1, BUCKET(index).pairs + j);
 
             free(LASTPAIR.key);
 
