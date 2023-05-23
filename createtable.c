@@ -2,15 +2,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-size_t hashFunction(char *key){
+size_t hashFunction(char *key, int table_size){
 
-    int a = 1, q = 3889;
+    int a = 1, q = 37;
     size_t ret = 0;
 
     for (int i = 0; i <= strlen(key); i++){
 
-        ret += (a * key[i]) % TABLE_SIZE;
-        a = (a * q) % TABLE_SIZE;   
+        ret = (ret + (a * key[i])) % table_size;
+        a = (a * q) % table_size;   
     }
 
     return ret;
@@ -25,13 +25,14 @@ hash_pair *createPair (char *key, int value){
     return pair;
 }
 
-hash_table *createTable(){
+hash_table *createTable(int size){
     
     hash_table *table = (hash_table *) malloc(sizeof(hash_table));  
     table->buckets = (hash_bucket*) calloc(TABLE_SIZE, sizeof(hash_bucket));
-    table->num_bucket = TABLE_SIZE;
+    table->num_buckets = size;
+    table->num_elems = 0;
     
-    for (int i = 0; i < TABLE_SIZE; i++){
+    for (int i = 0; i < table->num_buckets; i++){
         
         table->buckets[i].pairs = NULL;
         table->buckets[i].num_pairs = 0;
@@ -42,7 +43,7 @@ hash_table *createTable(){
 
 void deleteTable(hash_table *table){
 
-    for (int i = 0; i < TABLE_SIZE; i++){
+    for (int i = 0; i < table->num_buckets; i++){
 
         if(table->buckets[i].pairs != NULL){
 
@@ -53,4 +54,24 @@ void deleteTable(hash_table *table){
 
     free(table->buckets);
     free(table);
+}
+
+hash_table *rehash(hash_table *table){
+
+    int old_size = table->num_buckets;
+    hash_table *new_table = createTable (table->num_buckets * 2);
+    new_table->num_elems = table->num_elems;
+    
+    table->buckets = (hash_bucket*) realloc(table->buckets, table->num_buckets * sizeof(hash_bucket));
+
+    for (int index = 0; index < old_size; index++){
+        
+        for (int i = 0; i < BUCKET(index).num_pairs; i++){
+
+            new_table = insertKey(table, BUCKET(index).pairs[i].key, BUCKET(index).pairs[i].value);
+        }
+    }
+
+    deleteTable(table);
+    return new_table;
 }

@@ -19,11 +19,13 @@ void printBucket(hash_table *table, size_t index, FILE *file){
         fprintf(file, "{%s, %d} -> ", bucket->pairs[i].key, bucket->pairs[i].value);
     }
 
-    fprintf(file, "end of the bucket;\n");
+    fprintf(file, "endl;\n");
 }
 
 void printTable(hash_table *table, FILE* file){
 
-    for (size_t index = 0; index < TABLE_SIZE; index++)
+    for (size_t index = 0; index < table->num_buckets; index++)
         printBucket(table, index, file);
 }
+
+

@@ -7,15 +7,11 @@
 
 int main(){
 
-    hash_table *table = createTable();
+    hash_table *table = createTable(TABLE_SIZE);
+    table = insertKey(table, "asda", 5); 
 
-    table = insertKey(table, "H", 2);
-    table = insertKey(table, "H", 228); 
-    table = removeKey(table, "H");
-    
     printTable(table, stdout);
-
-
     deleteTable(table);
+
     return 0;
 }

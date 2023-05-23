@@ -1,5 +1,7 @@
 #include <stddef.h>
-#define TABLE_SIZE 50
+
+#define TABLE_SIZE 10
+#define BUCKET(i) (table->buckets[i])
 
 
 #ifndef MY_HEADER
@@ -16,14 +18,16 @@ typedef struct hb {
 
 typedef struct ht {
     hash_bucket *buckets;
-    int num_bucket;
+    int num_buckets;
+    int num_elems;
 } hash_table;
 #endif
 
-size_t hashFunction(char *key);
+size_t hashFunction(char *key, int size);
 
 hash_pair *createPair(char *key, int value);
 hash_table *createTable();
+hash_table *rehash(hash_table *table);
 void deleteTable();
 
 hash_table *addBucket(hash_table *table, hash_bucket *bucket, size_t index, int size_bucket);
